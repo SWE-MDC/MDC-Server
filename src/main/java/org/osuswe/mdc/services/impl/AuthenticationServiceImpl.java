@@ -1,6 +1,7 @@
 package org.osuswe.mdc.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.osuswe.mdc.controllers.MyAuthenticationManager;
 import org.osuswe.mdc.dto.*;
 import org.osuswe.mdc.exception.StatusException;
 import org.osuswe.mdc.exception.InvalidArgumentException;
@@ -22,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
+    private final MyAuthenticationManager authenticationManager;
     private final MailService mailService;
 
     @Override
@@ -47,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtAuthenticationResponse signin(SigninRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        var user = userMapper.getUser(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
+        var user = userMapper.getUserByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
         var jwt = jwtService.generateToken(user);
         var resp = new JwtAuthenticationResponse(HttpStatus.OK.value(), "Login successful");
         resp.setToken(jwt);

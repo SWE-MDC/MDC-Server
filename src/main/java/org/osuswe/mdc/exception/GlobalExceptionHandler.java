@@ -6,6 +6,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,11 +44,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildErrorResponse(e, HttpStatus.BAD_REQUEST, request);
     }
 
+    // Incorrect password
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleInvalidArgumentException(BadCredentialsException e, WebRequest request) {
+        return buildErrorResponse(e, HttpStatus.BAD_REQUEST, request);
+    }
+
+    // Account is locked
+    @ExceptionHandler(DisabledException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleInvalidArgumentException(DisabledException e, WebRequest request) {
+        return buildErrorResponse(e, HttpStatus.BAD_REQUEST, request);
+    }
+
     @ExceptionHandler(StatusException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> handleInvalidArgumentException(StatusException e, WebRequest request) {
         return buildErrorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
+
+
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
