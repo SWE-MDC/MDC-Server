@@ -49,7 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         var user = userMapper.getUser(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
         var jwt = jwtService.generateToken(user);
-        var resp = new JwtAuthenticationResponse(HttpStatus.OK.value(), "");
+        var resp = new JwtAuthenticationResponse(HttpStatus.OK.value(), "Login successful");
         resp.setToken(jwt);
         return resp;
     }
