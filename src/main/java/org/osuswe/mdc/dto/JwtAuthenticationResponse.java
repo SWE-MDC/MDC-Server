@@ -1,14 +1,15 @@
 package org.osuswe.mdc.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.osuswe.mdc.exception.ErrorResponse;
 
+import java.util.List;
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class JwtAuthenticationResponse {
+public class JwtAuthenticationResponse extends ErrorResponse {
     private String token;
+
+    public JwtAuthenticationResponse(int status, String message) {
+        super(status, message);
+    }
 }

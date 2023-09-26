@@ -13,9 +13,22 @@ import java.util.List;
 @AllArgsConstructor
 public class User implements UserDetails {
     private int id;
+    private String firstName;
+    private String lastName;
+    private String email;
     private String username;
     private String password;
-    private String role = "user";
+    private String pronouns;
+    private int year;
+    private String major;
+    private String phone;
+    private int role_id;
+    private Integer group_id;
+    private Integer campus_id;
+    private boolean expired;
+    private boolean locked;
+
+    private String role = "attendee";
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));
@@ -23,12 +36,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return !expired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !locked;
     }
 
     @Override

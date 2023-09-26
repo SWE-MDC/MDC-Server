@@ -1,4 +1,4 @@
-package org.osuswe.mdc.dto;
+package org.osuswe.mdc.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SigninRequest {
-    private String email;
-    private String password;
+public class Role {
+    private int id;
+    private String name;
 }
