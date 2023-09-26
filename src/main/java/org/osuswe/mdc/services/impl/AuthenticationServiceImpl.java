@@ -39,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     "You've successfully registered a new account in our event manage system. Click http://hp.gengl.me:8081/api/v1/auth/activate/" + request.getEmail() + " to activate your account");
         }
         var jwt = jwtService.generateToken(user);
-        var resp = new JwtAuthenticationResponse(HttpStatus.OK.value(), "");
+        var resp = new JwtAuthenticationResponse(HttpStatus.OK.value(), "Setup successful");
         resp.setToken(jwt);
         return resp;
     }
@@ -68,6 +68,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } else {
             throw new StatusException("This user is not locked");
         }
-        return new ActivateResponse(HttpStatus.OK.value(), "");
+        return new ActivateResponse(HttpStatus.OK.value(), "You have activated you account successfully");
     }
 }
