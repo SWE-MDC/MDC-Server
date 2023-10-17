@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.osuswe.mdc.exception.ErrorResponse;
+import org.osuswe.mdc.model.Role;
 public class ActivateResponse extends ErrorResponse {
     public ActivateResponse(int status, String message) {
         super(status, message);

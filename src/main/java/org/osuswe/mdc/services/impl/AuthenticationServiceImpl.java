@@ -7,6 +7,7 @@ import org.osuswe.mdc.exception.StatusException;
 import org.osuswe.mdc.exception.InvalidArgumentException;
 import org.osuswe.mdc.model.Role;
 import org.osuswe.mdc.model.User;
+import org.osuswe.mdc.repositories.RoleMapper;
 import org.osuswe.mdc.repositories.UserMapper;
 import org.osuswe.mdc.services.AuthenticationService;
 import org.osuswe.mdc.services.JwtService;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserMapper userMapper;
+    private final RoleMapper roleMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final MyAuthenticationManager authenticationManager;
@@ -31,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userMapper.getUserByEmail(request.getEmail()).isPresent()) {
             throw new InvalidArgumentException("Email " + request.getEmail() + " is already used");
         }
-        Role role = userMapper.getRoleByName("attendee").orElseThrow(() -> new StatusException("Role not found"));
+        Role role = roleMapper.getRoleByName("attendee").orElseThrow(() -> new StatusException("Role not found"));
         var user = User.builder().email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
                 .role_id(role.getId()).expired(false).locked(true).build();
         if (userMapper.addUser(user) > 0) {
@@ -47,9 +49,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtAuthenticationResponse signin(SigninRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        var user = userMapper.getUserByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
+        var user = userMapper.getUserByUsernameOrEmail(request.getUsernameOrEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid login credentials."));
         var jwt = jwtService.generateToken(user);
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
         var resp = new JwtAuthenticationResponse(HttpStatus.OK.value(), "Login successful");
         resp.setToken(jwt);
         return resp;
@@ -58,17 +60,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public ActivateResponse activate(ActivateRequest request) {
         User user = userMapper.getUserByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Cannot found user " + request.getEmail()));
+        String msg;
         if (user.isLocked()) {
             user.setLocked(false);
-            String msg;
             if (userMapper.updateUser(user) > 0) {
-                msg = "Activate user successfully";
+                msg = "You have activated you account successfully";
             } else {
                 throw new StatusException("Failed to activate user");
             }
         } else {
             throw new StatusException("This user is not locked");
         }
-        return new ActivateResponse(HttpStatus.OK.value(), "You have activated you account successfully");
+        return new ActivateResponse(HttpStatus.OK.value(), msg);
     }
 }
