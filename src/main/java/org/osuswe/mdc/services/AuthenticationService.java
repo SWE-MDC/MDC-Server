@@ -8,5 +8,5 @@ public interface AuthenticationService {
 
     JwtAuthenticationResponse signin(SigninRequest request);
 
-    ActivateResponse activate(ActivateRequest request);
+    GeneralResponse activate(ActivateRequest request);
 }

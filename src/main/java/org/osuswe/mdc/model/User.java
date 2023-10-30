@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class User implements UserDetails {
     private int id;
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String last_name;
     private String email;
     private String username;
     private String password;

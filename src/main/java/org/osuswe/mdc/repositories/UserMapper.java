@@ -8,16 +8,13 @@ import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
-//    @Select("SELECT * FROM users WHERE id = #{id}")
-//    User getUser(@Param("id") int id);
-
-    @Select("SELECT * FROM user WHERE username = #{username}")
-    Optional<User> getUser(@Param("username") String username);
-
     @Select("SELECT * FROM user WHERE email = #{email}")
     Optional<User> getUserByEmail(@Param("email") String email);
     @Select("SELECT * FROM user WHERE username = #{username}")
     Optional<User> getUserByUsername(@Param("username") String username);
+
+    @Select("SELECT * FROM user WHERE id = #{id}")
+    Optional<User> getUserById(@Param("id") int id);
 
     @Select("SELECT * FROM user WHERE email = #{usernameOrEmail} or username = #{usernameOrEmail}")
     Optional<User> getUserByUsernameOrEmail(@Param("usernameOrEmail") String usernameOrEmail);

@@ -2,10 +2,10 @@ package org.osuswe.mdc.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.osuswe.mdc.dto.*;
 import org.osuswe.mdc.exception.InvalidArgumentException;
 import org.osuswe.mdc.services.AuthenticationService;
+import org.osuswe.mdc.services.UserService;
 import org.osuswe.mdc.util.EmailUtil;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final UserService userService;
 
     @PostMapping(path = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,7 +36,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/activate/{email}", method = RequestMethod.GET)
-    public ResponseEntity<ActivateResponse> activate(@PathVariable("email") String email) {
+    public ResponseEntity<GeneralResponse> activate(@PathVariable("email") String email) {
         ActivateRequest request = new ActivateRequest();
         request.setEmail(email);
         var resp = authenticationService.activate(request);
@@ -52,4 +53,9 @@ public class AuthenticationController {
     public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SigninRequest request) {
         return ResponseEntity.ok(authenticationService.signin(request));
     }
+
+//    @RequestMapping(value = "/reset/{email}", method = RequestMethod.GET)
+//    public ResponseEntity<ErrorResponse> reset(@PathVariable("email") String email) {
+//
+//    }
 }

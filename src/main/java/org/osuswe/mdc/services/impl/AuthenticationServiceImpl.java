@@ -13,7 +13,6 @@ import org.osuswe.mdc.services.AuthenticationService;
 import org.osuswe.mdc.services.JwtService;
 import org.osuswe.mdc.services.MailService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -58,7 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public ActivateResponse activate(ActivateRequest request) {
+    public GeneralResponse activate(ActivateRequest request) {
         User user = userMapper.getUserByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Cannot found user " + request.getEmail()));
         String msg;
         if (user.isLocked()) {
@@ -71,6 +70,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } else {
             throw new StatusException("This user is not locked");
         }
-        return new ActivateResponse(HttpStatus.OK.value(), msg);
+        return new GeneralResponse(HttpStatus.OK.value(), msg);
     }
 }
