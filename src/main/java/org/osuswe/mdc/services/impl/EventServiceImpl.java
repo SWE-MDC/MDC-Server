@@ -41,7 +41,10 @@ public class EventServiceImpl implements EventService {
             EventResponse resp = new EventResponse();
             DateFormat df = new SimpleDateFormat("MMMM dd, yyyy HH:mm");
             Optional<User> user = userMapper.getUserById(e.getOrganizer());
-            Optional<AffinityGroup> group = groupMapper.getGroupById(e.getGroup_id());
+            Optional<AffinityGroup> group = Optional.empty();
+            if (e.getGroup_id() != null) {
+                group = groupMapper.getGroupById(e.getGroup_id());
+            }
 
             resp.setId(e.getId());
             resp.setTitle(e.getTitle());
