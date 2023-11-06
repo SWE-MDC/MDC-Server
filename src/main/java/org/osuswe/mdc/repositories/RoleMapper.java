@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface RoleMapper {
     @Select("SELECT * FROM role WHERE role.name = #{name}")
     Optional<Role> getRoleByName(@Param("name") String name);
+    @Select("SELECT * FROM role WHERE role.id = #{id}")
+    Optional<Role> getRoleById(@Param("id") int id);
 }

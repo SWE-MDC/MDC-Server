@@ -49,10 +49,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtAuthenticationResponse signin(SigninRequest request) {
         var user = userMapper.getUserByUsernameOrEmail(request.getUsernameOrEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid login credentials."));
+        var role = roleMapper.getRoleById(user.getRole_id()).orElseThrow(() -> new RuntimeException("Invalid Role Id"));
         var jwt = jwtService.generateToken(user);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
         var resp = new JwtAuthenticationResponse(HttpStatus.OK.value(), "Login successful");
         resp.setToken(jwt);
+        resp.setRole(role);
         return resp;
     }
 
