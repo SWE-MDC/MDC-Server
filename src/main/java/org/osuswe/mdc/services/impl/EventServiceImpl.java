@@ -1,7 +1,9 @@
 package org.osuswe.mdc.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.osuswe.mdc.dto.EventResponse;
+import org.osuswe.mdc.exception.InvalidArgumentException;
 import org.osuswe.mdc.model.AffinityGroup;
 import org.osuswe.mdc.model.Event;
 import org.osuswe.mdc.model.User;
@@ -25,6 +27,14 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void addEvent(Event event) {
+        if (StringUtils.isEmpty(event.getTitle())) {
+            throw new InvalidArgumentException("Title is empty");
+        } else if (StringUtils.isEmpty(event.getDetails())) {
+            throw new InvalidArgumentException("Details is empty");
+        } else if (StringUtils.isEmpty(event.getLocation())) {
+            throw new InvalidArgumentException("Location is empty");
+        }
+
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         event.setEvent_code(String.format("%06d", number));

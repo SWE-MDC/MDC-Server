@@ -29,13 +29,7 @@ public class EventController {
     @PostMapping("/add")
     public ResponseEntity<GeneralResponse> addEvent(@RequestHeader("Authorization") String bearerToken,
                                                     @RequestBody AddEventRequest request) throws ParseException {
-        if (StringUtils.isEmpty(request.getTitle())) {
-            throw new RuntimeException("Title is empty");
-        } else if (StringUtils.isEmpty(request.getDetails())) {
-            throw new RuntimeException("Details is empty");
-        } else if (StringUtils.isEmpty(request.getLocation())) {
-            throw new RuntimeException("Location is empty");
-        }
+
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         User user = userService.getUserFromBearerToken(bearerToken);
