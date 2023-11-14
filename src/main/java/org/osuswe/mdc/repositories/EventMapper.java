@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.osuswe.mdc.model.Event;
+import org.osuswe.mdc.model.UserEvent;
 
 import java.util.List;
 

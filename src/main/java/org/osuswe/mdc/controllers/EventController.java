@@ -2,13 +2,11 @@ package org.osuswe.mdc.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.osuswe.mdc.dto.AddEventRequest;
-import org.osuswe.mdc.dto.EventResponse;
-import org.osuswe.mdc.dto.GeneralResponse;
-import org.osuswe.mdc.dto.GetEventsResponse;
+import org.osuswe.mdc.dto.*;
 import org.osuswe.mdc.model.Event;
 import org.osuswe.mdc.model.User;
 import org.osuswe.mdc.services.EventService;
+import org.osuswe.mdc.services.UserEventService;
 import org.osuswe.mdc.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +27,6 @@ public class EventController {
     @PostMapping("/add")
     public ResponseEntity<GeneralResponse> addEvent(@RequestHeader("Authorization") String bearerToken,
                                                     @RequestBody AddEventRequest request) throws ParseException {
-
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         User user = userService.getUserFromBearerToken(bearerToken);
         Event event = Event.builder().title(request.getTitle())
@@ -54,4 +50,6 @@ public class EventController {
         GetEventsResponse resp = new GetEventsResponse(HttpStatus.OK.value(), "", events);
         return ResponseEntity.ok(resp);
     }
+
+
 }
