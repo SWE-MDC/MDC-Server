@@ -34,7 +34,6 @@ public class UserEventController {
         return ResponseEntity.ok(resp);
     }
 
-
     @PostMapping("/checkin")
     public ResponseEntity<GeneralResponse> checkin(@RequestHeader("Authorization") String bearerToken,
                                                    @RequestBody CheckinRequest request) {

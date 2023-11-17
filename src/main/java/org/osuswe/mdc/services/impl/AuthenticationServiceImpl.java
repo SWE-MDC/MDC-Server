@@ -7,15 +7,20 @@ import org.osuswe.mdc.exception.StatusException;
 import org.osuswe.mdc.exception.InvalidArgumentException;
 import org.osuswe.mdc.model.Role;
 import org.osuswe.mdc.model.User;
+import org.osuswe.mdc.model.VerificationCode;
 import org.osuswe.mdc.repositories.RoleMapper;
 import org.osuswe.mdc.repositories.UserMapper;
 import org.osuswe.mdc.services.AuthenticationService;
 import org.osuswe.mdc.services.JwtService;
 import org.osuswe.mdc.services.MailService;
+import org.osuswe.mdc.services.ScheduledTasks;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final MyAuthenticationManager authenticationManager;
     private final MailService mailService;
+    @Value("${server.base}")
+    private String serverBase;
 
     @Override
     public JwtAuthenticationResponse signup(SignupRequest request) {
@@ -73,5 +80,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new StatusException("This user is not locked");
         }
         return new GeneralResponse(HttpStatus.OK.value(), msg);
+    }
+
+
+    public void sendResetPasswordEmail(String email) {
+        System.out.println(email);
+
+        User user = userMapper.getUserByEmail(email).orElseThrow(() -> new RuntimeException("Cannot find user " + email));
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+        VerificationCode code = new VerificationCode();
+        code.setCode(String.format("%06d", number));
+        code.setTimestamp(System.currentTimeMillis());
+        ScheduledTasks.verificationCodes.put(user.getEmail(), code);
+
+        mailService.sendTextEmail(user.getEmail(), "SWE - Reset Password",
+                "Click " + serverBase + "/api/v1/auth/reset/" + user.getEmail() + "?code=" + code.getCode() + " to reset your password");
     }
 }

@@ -9,4 +9,6 @@ public interface AuthenticationService {
     JwtAuthenticationResponse signin(SigninRequest request);
 
     GeneralResponse activate(ActivateRequest request);
+
+    void sendResetPasswordEmail(String email);
 }

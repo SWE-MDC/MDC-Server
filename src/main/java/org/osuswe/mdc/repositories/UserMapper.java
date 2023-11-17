@@ -27,4 +27,7 @@ public interface UserMapper {
 
     @Update("UPDATE user SET first_name = #{user.firstName}, last_name = #{user.lastName}, email = #{user.email}, username = #{user.username}, password = #{user.password}, pronouns = #{user.pronouns}, year = #{user.year}, major = #{user.major}, phone = #{user.phone}, role_id = #{user.role_id}, group_id = #{user.group_id}, campus_id = #{user.campus_id}, expired = #{user.expired}, locked = #{user.locked} WHERE id = #{user.id}")
     int updateUser(@Param("user") User user);
+
+    @Update("UPDATE user SET password = #{password} WHERE id = #{id}")
+    int updatePassword(int id, String password);
 }
