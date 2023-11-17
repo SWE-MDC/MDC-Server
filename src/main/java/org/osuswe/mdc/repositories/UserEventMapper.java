@@ -12,7 +12,7 @@ import java.util.Optional;
 @Mapper
 public interface UserEventMapper {
 
-    @Insert("INSERT INTO user_event(user_id, event_id, status, comments) VALUES (#{user_id}, #{event_id}, #{status}, #{comments})")
+    @Insert("INSERT INTO user_event(user_id, event_id, status, show_up, comments) VALUES (#{user_id}, #{event_id}, #{status}, #{show_up}, #{comments})")
     int addUserEvent(UserEvent ue);
 
     @Update("UPDATE user_event SET status = #{status}, show_up = #{show_up}, comments = #{comments} WHERE id = #{id}")
