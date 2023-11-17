@@ -43,6 +43,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public Event getEvent(int id) {
+        return eventMapper.getEvent(id);
+    }
+
+    @Override
     public List<EventResponse> getEvents(int limit) {
         List<Event> events = eventMapper.getEvents(limit);
         List<EventResponse> responses = new ArrayList<>();

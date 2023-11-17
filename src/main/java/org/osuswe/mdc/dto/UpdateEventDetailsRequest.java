@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateUserEventRequest {
+public class UpdateEventDetailsRequest {
     private int eventId;
     private Integer userId;
     private int status;
-    private int showUp;
     private String comments;
 }

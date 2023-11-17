@@ -1,19 +1,20 @@
 package org.osuswe.mdc.dto;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 @Data
 @NoArgsConstructor
-public class EventResponse {
-    private int id;
+public class EventDetail {
+    private int userId;
+    private int eventId;
     private String title;
     private String details;
     private String date;
+    private int status;
+    private int showUp;
+    private String comments;
     private String location;
     private String organizer;
     private String eventCode;
-    private String group;
 }

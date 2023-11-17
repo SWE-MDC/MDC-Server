@@ -1,12 +1,10 @@
 package org.osuswe.mdc.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.osuswe.mdc.dto.*;
 import org.osuswe.mdc.model.Event;
 import org.osuswe.mdc.model.User;
 import org.osuswe.mdc.services.EventService;
-import org.osuswe.mdc.services.UserEventService;
 import org.osuswe.mdc.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController

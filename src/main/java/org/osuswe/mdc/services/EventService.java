@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface EventService {
     void addEvent(Event event);
-
+    Event getEvent(int id);
     List<EventResponse> getEvents(int limit);
 }

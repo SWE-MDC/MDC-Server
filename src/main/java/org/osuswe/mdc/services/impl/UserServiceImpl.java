@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -54,5 +55,10 @@ public class UserServiceImpl implements UserService {
         token = token.substring(7);
         String username = jwtService.extractUserName(token);
         return userMapper.getUserByUsername(username).orElseThrow(() -> new RuntimeException("Cannot find user " + username));
+    }
+
+    @Override
+    public Optional<User> getUser(int id) {
+        return userMapper.getUserById(id);
     }
 }
