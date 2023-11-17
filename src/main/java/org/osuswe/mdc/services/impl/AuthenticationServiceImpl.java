@@ -55,7 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtAuthenticationResponse signin(SigninRequest request) {
-        var user = userMapper.getUserByUsernameOrEmail(request.getUsernameOrEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid login credentials."));
+        var user = userMapper.getUserByUsernameOrEmail(request.getUsernameOrEmail()).orElseThrow(() -> new InvalidArgumentException("Invalid login credentials."));
         var role = roleMapper.getRoleById(user.getRole_id()).orElseThrow(() -> new RuntimeException("Invalid Role Id"));
         var jwt = jwtService.generateToken(user);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
@@ -67,7 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public GeneralResponse activate(ActivateRequest request) {
-        User user = userMapper.getUserByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Cannot found user " + request.getEmail()));
+        User user = userMapper.getUserByEmail(request.getEmail()).orElseThrow(() -> new InvalidArgumentException("Cannot found user " + request.getEmail()));
         String msg;
         if (user.isLocked()) {
             user.setLocked(false);
@@ -86,7 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void sendResetPasswordEmail(String email) {
         System.out.println(email);
 
-        User user = userMapper.getUserByEmail(email).orElseThrow(() -> new RuntimeException("Cannot find user " + email));
+        User user = userMapper.getUserByEmail(email).orElseThrow(() -> new InvalidArgumentException("Cannot find user " + email));
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         VerificationCode code = new VerificationCode();
