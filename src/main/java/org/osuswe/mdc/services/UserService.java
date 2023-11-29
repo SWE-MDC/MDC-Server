@@ -10,11 +10,12 @@ public interface UserService {
     UserDetailsService userDetailsService();
     Role getRoleByUsername(String username);
 
-
     void resetPassword(String email,
                        String verifyCode);
 
     User getUserFromBearerToken(String token);
 
     Optional<User> getUser(int id);
+
+    void updateUser(User user);
 }

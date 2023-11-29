@@ -19,7 +19,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String pronouns;
-    private int year;
+    private String year;
     private String major;
     private String phone;
     private int role_id;

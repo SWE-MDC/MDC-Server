@@ -25,7 +25,7 @@ public interface UserMapper {
     @Select("SELECT role.id, role.name FROM role, user WHERE user.username = #{username} and role.id = user.role_id")
     Optional<Role> getRoleByUsername(@Param("username") String username);
 
-    @Update("UPDATE user SET first_name = #{user.firstName}, last_name = #{user.lastName}, email = #{user.email}, username = #{user.username}, password = #{user.password}, pronouns = #{user.pronouns}, year = #{user.year}, major = #{user.major}, phone = #{user.phone}, role_id = #{user.role_id}, group_id = #{user.group_id}, campus_id = #{user.campus_id}, expired = #{user.expired}, locked = #{user.locked} WHERE id = #{user.id}")
+    @Update("UPDATE user SET first_name = #{user.first_name}, last_name = #{user.last_name}, email = #{user.email}, username = #{user.username}, password = #{user.password}, pronouns = #{user.pronouns}, year = #{user.year}, major = #{user.major}, phone = #{user.phone}, role_id = #{user.role_id}, campus_id = #{user.campus_id}, expired = #{user.expired}, locked = #{user.locked} WHERE id = #{user.id}")
     int updateUser(@Param("user") User user);
 
     @Update("UPDATE user SET password = #{password} WHERE id = #{id}")

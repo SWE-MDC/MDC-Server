@@ -45,7 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userMapper.addUser(user) > 0) {
             System.out.println("Register successfully, user: " + request.getEmail());
             mailService.sendTextEmail(request.getEmail(), "Welcome to SWE",
-                    "You've successfully registered a new account in our event manage system. Click http://hp.gengl.me:8081/api/v1/auth/activate/" + request.getEmail() + " to activate your account");
+                    "You've successfully registered a new account in our event manage system. Click " + serverBase + "/api/v1/auth/activate/" + request.getEmail() + " to activate your account");
         }
         var jwt = jwtService.generateToken(user);
         var resp = new JwtAuthenticationResponse(HttpStatus.OK.value(), "Setup successful");
