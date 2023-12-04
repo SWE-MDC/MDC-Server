@@ -19,7 +19,7 @@ public interface UserMapper {
     @Select("SELECT * FROM user WHERE email = #{usernameOrEmail} or username = #{usernameOrEmail}")
     Optional<User> getUserByUsernameOrEmail(@Param("usernameOrEmail") String usernameOrEmail);
 
-    @Insert("INSERT INTO user(email, password, role_id) VALUES (#{email}, #{password}, #{role_id})")
+    @Insert("INSERT INTO user(email, username, password, role_id) VALUES (#{email}, #{username}, #{password}, #{role_id})")
     int addUser(User user);
 
     @Select("SELECT role.id, role.name FROM role, user WHERE user.username = #{username} and role.id = user.role_id")
