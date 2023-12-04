@@ -1,6 +1,7 @@
 package org.osuswe.mdc.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.osuswe.mdc.controllers.MyAuthenticationManager;
 import org.osuswe.mdc.dto.*;
 import org.osuswe.mdc.exception.StatusException;
@@ -36,6 +37,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtAuthenticationResponse signup(SignupRequest request) {
+        if (StringUtils.isEmpty(request.getUsername())) {
+            throw new InvalidArgumentException("Username is empty");
+        }
         if (userMapper.getUserByEmail(request.getEmail()).isPresent()) {
             throw new InvalidArgumentException("Email " + request.getEmail() + " is already used");
         }
