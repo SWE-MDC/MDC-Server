@@ -30,4 +30,7 @@ public interface UserMapper {
 
     @Update("UPDATE user SET password = #{password} WHERE id = #{id}")
     int updatePassword(int id, String password);
+
+    @Update("UPDATE user SET role_id = #{role_id} WHERE id = #{id}")
+    int updateRole(int id, int role_id);
 }

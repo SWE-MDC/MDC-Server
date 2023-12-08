@@ -18,4 +18,6 @@ public interface UserService {
     Optional<User> getUser(int id);
 
     void updateUser(User user);
+
+    void setAdmin(String email);
 }

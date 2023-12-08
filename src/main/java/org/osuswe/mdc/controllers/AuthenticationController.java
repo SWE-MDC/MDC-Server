@@ -23,6 +23,11 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
 
+    @RequestMapping(value = "/activate/{email}", method = RequestMethod.GET)
+    public ResponseEntity<GeneralResponse> setAdmin(@PathVariable("email") String email) {
+        userService.setAdmin(email);
+        return ResponseEntity.ok(new GeneralResponse(HttpStatus.OK.value(), ""));
+    }
 
     @PostMapping(path = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

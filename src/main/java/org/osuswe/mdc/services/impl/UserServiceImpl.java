@@ -6,6 +6,7 @@ import org.osuswe.mdc.exception.InvalidArgumentException;
 import org.osuswe.mdc.model.Role;
 import org.osuswe.mdc.model.User;
 import org.osuswe.mdc.model.VerificationCode;
+import org.osuswe.mdc.repositories.RoleMapper;
 import org.osuswe.mdc.repositories.UserMapper;
 import org.osuswe.mdc.services.JwtService;
 import org.osuswe.mdc.services.MailService;
@@ -27,6 +28,7 @@ import java.util.Random;
 public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final UserMapper userMapper;
+    private final RoleMapper roleMapper;
     private final MailService mailService;
 
 
@@ -40,7 +42,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.getRoleByUsername(username).orElseThrow(() -> new InvalidArgumentException("Cannot find user " + username));
     }
 
-
     @Override
     public void resetPassword(String email, String verifyCode) {
         User user = userMapper.getUserByEmail(email).orElseThrow(() -> new InvalidArgumentException("Cannot find user " + email));
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
             userMapper.updatePassword(user.getId(), encodedPassword);
             mailService.sendTextEmail(user.getEmail(), "SWE - New Password",
                     "Your new password is: " + newPassword);
-        } else{
+        } else {
             throw new InvalidArgumentException("Invalid verify code");
         }
     }
@@ -71,5 +72,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
         userMapper.updateUser(user);
+    }
+
+    @Override
+    public void setAdmin(String email) {
+        Optional<User> user = userMapper.getUserByEmail(email);
+        Optional<Role> role = roleMapper.getRoleByName("admin");
+        if (user.isPresent() && role.isPresent()) {
+            userMapper.updateRole(user.get().getId(), role.get().getId());
+        }
     }
 }
